@@ -1,5 +1,6 @@
 import {
   createLinkedinPost,
+  extractTagsAndSeries,
   generateMarkdownPost,
   getDynamicCategories,
   getTitleForCategory,
@@ -22,10 +23,14 @@ export async function dailyContentBlast(purposes: string[]) {
     const markdown = await retry(() => generateMarkdownPost(title));
     console.log("✍️ Yazı oluşturuldu, yayınlanıyor...");
 
-    const devToUrl = await retry(() => publishToDevto(title, markdown));
+    const { tags, series } = await retry(() => extractTagsAndSeries(markdown));
+
+    const devToUrl = await retry(() =>
+      publishToDevto(title, markdown, tags, series)
+    );
 
     const linkedinText = await retry(() =>
-      createLinkedinPost(markdown, devToUrl)
+      createLinkedinPost(markdown, devToUrl, tags, series)
     );
     console.log("🔗 LinkedIn paylaşım metni oluşturuldu.");
 

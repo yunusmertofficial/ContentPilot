@@ -1,12 +1,12 @@
 import axios from "axios";
-import { retry } from "./utils";
 import { config } from "../config";
-import { extractTagsAndSeries } from "./ai";
 
-export async function publishToDevto(title: string, markdown: string) {
-  const { tags, series } = await retry(() => extractTagsAndSeries(markdown));
-  console.log("🏷️ Etiketler:", tags);
-  console.log("📚 Seri:", series);
+export async function publishToDevto(
+  title: string,
+  markdown: string,
+  tags: string[],
+  series: string
+) {
   const payload = {
     article: {
       title,

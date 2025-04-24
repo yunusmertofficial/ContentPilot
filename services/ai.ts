@@ -158,29 +158,39 @@ async function extractTagsAndSeries(
   }
 }
 
-async function createLinkedinPost(markdown: string, postUrl: string) {
+async function createLinkedinPost(
+  markdown: string,
+  postUrl: string,
+  tags: string[],
+  series?: string
+) {
+  const formattedTags = tags.map((tag) => `#${tag}`).join(" ");
+
+  const seriesNote = series
+    ? `\n🧩 Not: Bu gönderi "${series}" adlı serinin bir parçasıdır.\n`
+    : "";
+
   const prompt = `
-  Aşağıda bir blog yazısı markdown formatında verilmiştir. Bu yazıya dayanarak, LinkedIn'de paylaşılacak şekilde yüksek kaliteli, profesyonel bir açıklama metni üret.
-  
-  Paylaşım metni aşağıdaki kurallara göre hazırlanmalı:
-  
-  🔹 Açılış paragrafı dikkat çekici olmalı. Okuyucunun ilgisini çeken bir cümleyle yazıya giriş yapılmalı. 🚀, 📢, 🔍 gibi emojiler kullanılabilir.
-  
-  🔹 Yazının konusu net bir şekilde açıklanmalı. Konunun neden önemli olduğu sade bir dille anlatılmalı. Teknik terimler varsa, basitleştirilmiş bir anlatım tercih edilmeli.
-  
-  🔹 En az 2 ayrı paragraf kullanılmalı. Her paragraf ayrı bir fikir veya başlık taşımalı. Metin bölümlenmiş ve okunabilir olmalı.
-  
-  🔹 Eğer içerikte maddeler varsa, her maddeye 🟠, ✅, 🔸 gibi emojiler eklenerek yazılmalı.
-  
-  🔹 Paylaşım sonunda aşağıdaki satırla yazıya yönlendirme yapılmalı:
-  👉 Yazının tamamı için: ${postUrl}
-  
-  🔹 En son satırda en fazla 10 adet teknoloji ve yazılım odaklı, alakalı hashtag kullanılmalı (örn: #Token #API #Güvenlik #WebGeliştirme #SoftwareDevelopment #Tech).
-  
-  Blog içeriği aşağıda yer almaktadır:
-  
-  ${markdown}
-  `;
+Aşağıda bir blog yazısı markdown formatında verilmiştir. Bu yazıya dayanarak, LinkedIn'de paylaşılmak üzere dikkat çekici ve profesyonel bir açıklama metni üret.
+
+📌 Hedef: Kullanıcının ilgisini çekmek ve onu blog yazısına tıklamaya teşvik etmek.
+
+Metin şu kurallara uygun olmalı:
+
+🔹 Açılış paragrafı dikkat çekici ve çarpıcı olmalı. 🚀, 📢, 🔍 gibi emojilerle desteklenebilir.  
+🔹 Konu kısa, sade ve etkili biçimde özetlenmeli. Gereksiz detaylardan kaçınılmalı.  
+🔹 Yazı maksimum 2 paragraftan oluşmalı. Görsel olarak boşluklu ve okunabilir olmalı.  
+🔹 Liste içerik varsa 🟠, ✅, 🔸 gibi emojilerle yazılmalı.  
+🔹 Sonunda mutlaka bu satır yer almalı:
+👉 Yazının tamamı için: ${postUrl}  
+${seriesNote}
+🔹 **Aşağıdaki etiketleri LinkedIn postunun sonuna hashtag olarak ekle:**  
+${formattedTags}
+
+Blog içeriği:
+
+${markdown}
+`;
 
   const response = await cohere.generate({
     model: "command-r-plus",
@@ -189,8 +199,7 @@ async function createLinkedinPost(markdown: string, postUrl: string) {
     temperature: 0.6,
   });
 
-  const message = `${response.generations[0].text.trim()}`;
-
+  const message = response.generations[0].text.trim();
   return message;
 }
 
