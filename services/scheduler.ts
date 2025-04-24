@@ -38,7 +38,11 @@ export async function dailyContentBlast(purposes: string[]) {
     const linkedinResponse = await retry(() =>
       sharePostOnLinkedIn(linkedinText)
     );
-    console.log("🔗 LinkedIn paylaşım yapıldı:", linkedinResponse);
+
+    await sendEmail(
+      `✅ Yeni İçerik Yayınlandı: ${title}`,
+      `Yeni yazı başarıyla yayınlandı.\n\nBaşlık: ${title}\nDev.to Linki: ${devToUrl}\n\nLinkedIn durumu: ${linkedinResponse}`
+    );
   } catch (err) {
     console.error("🚨 Sistem durdu:", err);
 
