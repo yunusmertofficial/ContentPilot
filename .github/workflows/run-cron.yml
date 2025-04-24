@@ -1,0 +1,33 @@
+name: Run My Cron Job
+
+on:
+  schedule:
+    - cron: "0 */12 * * *" # ✅ her 12 saatte bir çalışır (UTC)
+  workflow_dispatch:
+
+jobs:
+  run-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repo'yu klonla
+        uses: actions/checkout@v3
+
+      - name: Node kur
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Bağımlılıkları yükle
+        run: npm install
+
+      - name: Secret'ları .env dosyasına yaz
+        run: |
+          echo "COHERE_API_KEY=${{ secrets.COHERE_API_KEY }}" >> .env
+          echo "DEVTO_API_KEY=${{ secrets.DEVTO_API_KEY }}" >> .env
+          echo "LINKEDIN_ACCESS_TOKEN=${{ secrets.LINKEDIN_ACCESS_TOKEN }}" >> .env
+          echo "AUTHOR_URN=${{ secrets.AUTHOR_URN }}" >> .env
+          echo "CRON_TIMES=${{ secrets.CRON_TIMES }}" >> .env
+
+      - name: Projeyi çalıştır
+        run: npm start
