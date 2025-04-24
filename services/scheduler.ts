@@ -41,7 +41,11 @@ export async function dailyContentBlast(purposes: string[]) {
 
     await sendEmail(
       `✅ Yeni İçerik Yayınlandı: ${title}`,
-      `Yeni yazı başarıyla yayınlandı.\n\nBaşlık: ${title}\nDev.to Linki: ${devToUrl}\n\nLinkedIn durumu: ${linkedinResponse}`
+      `Yeni yazı başarıyla yayınlandı.\n\n` +
+        `📅 Yayınlanma Tarihi: ${new Date().toLocaleString("tr-TR")}\n` +
+        `📝 Başlık: ${title}\n` +
+        `🔗 Dev.to Linki: ${devToUrl}\n` +
+        `📣 LinkedIn Durumu: ${linkedinResponse}`
     );
   } catch (err) {
     console.error("🚨 Sistem durdu:", err);
@@ -55,7 +59,7 @@ export async function dailyContentBlast(purposes: string[]) {
     }
 
     await sendEmail(
-      `🚨 Hata! Post Paylaşılamadı ${new Date().toLocaleString()}`,
+      `🚨 Hata! Post Paylaşılamadı ${new Date().toLocaleString("tr-TR")}`,
       `Hata mesajı:\n${errorMessage}`
     );
   }
