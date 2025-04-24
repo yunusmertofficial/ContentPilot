@@ -5,6 +5,7 @@
   "scripts": {
     "auth": "ts-node auth.ts",
     "start": "ts-node index.ts",
+    "cronjob": "ts-node cronjob.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
