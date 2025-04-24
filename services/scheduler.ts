@@ -7,6 +7,7 @@ import {
 } from "./ai";
 import { publishToDevto } from "./devto";
 import { sharePostOnLinkedIn } from "./linkedin";
+import { sendEmail } from "./sendEmail";
 import { retry } from "./utils";
 
 export async function dailyContentBlast(purposes: string[]) {
@@ -40,5 +41,18 @@ export async function dailyContentBlast(purposes: string[]) {
     console.log("🔗 LinkedIn paylaşım yapıldı:", linkedinResponse);
   } catch (err) {
     console.error("🚨 Sistem durdu:", err);
+
+    let errorMessage = "";
+    if (err instanceof Error) {
+      errorMessage = `Hata yeri:\n${err.stack}`;
+      errorMessage += `\n\nHata mesajı:\n${err.message}`;
+    } else {
+      errorMessage = `Hata mesajı (tipi tanımsız):\n${JSON.stringify(err)}`;
+    }
+
+    await sendEmail(
+      `🚨 Hata! Post Paylaşılamadı ${new Date().toLocaleString()}`,
+      `Hata mesajı:\n${errorMessage}`
+    );
   }
 }

@@ -66,7 +66,9 @@ async function getTitleForCategory(category: string): Promise<string> {
     temperature: 0.7,
   });
 
-  return response.generations[0].text.trim().replace(/^["'\d\-\.\s]+/, "");
+  return response.generations[0].text
+    .trim()
+    .replace(/^["'\d\-\.\s]+|["'\s]+$/g, "");
 }
 
 async function generateMarkdownPost(title: string): Promise<string> {
