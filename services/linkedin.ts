@@ -31,7 +31,6 @@ export async function sharePostOnLinkedIn(text: string) {
       }
     );
 
-    console.log("✅ Paylaşım başarılı:", response.data);
     return response.data;
   } catch (err: any) {
     console.error("❌ Paylaşım hatası:", err.response?.data || err.message);
