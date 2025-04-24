@@ -75,6 +75,7 @@ async function generateMarkdownPost(title: string): Promise<string> {
   const prompt = `
 Aşağıdaki başlığa göre yüksek kaliteli teknik blog yazısı yaz. Kurallar:
 
+- Başlık ayrı bir yerde zaten verildi. İçerik yalnızca giriş paragrafıyla başlamalı. 
 - Markdown formatında yaz
 - Giriş: En az 2 paragraf, konunun önemi anlatılsın
 - En az 3 alt başlık (150+ kelime): Teknik açıklama + örnek
