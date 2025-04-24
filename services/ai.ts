@@ -165,6 +165,7 @@ async function createLinkedinPost(
   markdown: string,
   postUrl: string,
   tags: string[],
+  title: string,
   series?: string
 ) {
   const formattedTags = tags.map((tag) => `#${tag}`).join(" ");
@@ -189,6 +190,8 @@ Metin şu kurallara uygun olmalı:
 ${seriesNote}
 🔹 **Aşağıdaki etiketleri LinkedIn postunun sonuna hashtag olarak ekle:**  
 ${formattedTags}
+
+Blog başlığı: ${title}
 
 Blog içeriği:
 

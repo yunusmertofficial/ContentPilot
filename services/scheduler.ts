@@ -31,7 +31,7 @@ export async function dailyContentBlast(purposes: string[]) {
     );
 
     const linkedinText = await retry(() =>
-      createLinkedinPost(markdown, devToUrl, tags, series)
+      createLinkedinPost(markdown, devToUrl, tags, title, series)
     );
     console.log("🔗 LinkedIn paylaşım metni oluşturuldu.");
 
