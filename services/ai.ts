@@ -75,7 +75,7 @@ async function generateMarkdownPost(title: string): Promise<string> {
   const prompt = `
 Aşağıdaki başlığa göre yüksek kaliteli teknik blog yazısı yaz. Kurallar:
 
-- Başlık ayrı bir yerde zaten verildi. İçerik yalnızca giriş paragrafıyla başlamalı. 
+- Başlık zaten verildi. İçeriğe başlık EKLEME. İçerik SADECE giriş paragrafıyla başlamalı.
 - Markdown formatında yaz
 - Giriş: En az 2 paragraf, konunun önemi anlatılsın
 - En az 3 alt başlık (150+ kelime): Teknik açıklama + örnek
@@ -84,6 +84,18 @@ Aşağıdaki başlığa göre yüksek kaliteli teknik blog yazısı yaz. Kuralla
 - Sonuç: Özet ve öğrenilenler
 - SEO uyumlu başlık ve kelimeler kullan
 - Profesyonel ama sade anlatım
+
+## ❌ YANLIŞ ÖRNEK
+## Tatil Anılarım
+Yaz tatilinde deniz kenarına gittik...
+
+(Başlık zaten verildiyse, içerikte tekrar başlık kullanmak YANLIŞTIR.)
+
+## ✅ DOĞRU ÖRNEK
+Yaz tatili birçok kişi için...
+
+(İçerik sadece giriş paragrafıyla başlar, başlık içermez.)
+
 
 Başlık: "${title}"
   `;
