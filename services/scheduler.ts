@@ -45,7 +45,7 @@ export async function dailyContentBlast(purposes: string[]) {
         `📅 Yayınlanma Tarihi: ${new Date().toLocaleString("tr-TR")}\n` +
         `📝 Başlık: ${title}\n` +
         `🔗 Dev.to Linki: ${devToUrl}\n` +
-        `📣 LinkedIn Durumu: ${linkedinResponse}`
+        `📣 LinkedIn Durumu: ${linkedinResponse.id}`
     );
   } catch (err) {
     console.error("🚨 Sistem durdu:", err);
