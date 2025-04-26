@@ -57,7 +57,7 @@ Cevap:
 }
 
 async function getTitleForCategory(category: string): Promise<string> {
-  const prompt = `Sen deneyimli bir teknik blog yazarı ve yazılımcısın. '${category}' konusunda EN FAZLA 5 kelimelik, dikkat çekici, profesyonel, SEO uyumlu bir blog başlığı üret.
+  const prompt = `Sen deneyimli bir teknik blog yazarı ve yazılımcısın. '${category}' konusunda EN FAZLA 10 kelimelik, dikkat çekici, profesyonel, SEO uyumlu bir blog başlığı üret.
 
 - Başlık sade, akıcı ve merak uyandırıcı olsun.
 - Sadece 1 başlık üret, açıklama yapma.
