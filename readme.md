@@ -1,0 +1,1 @@
+.env için gerekli konfigürasyon eklenecektir buraya.

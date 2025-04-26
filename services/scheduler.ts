@@ -7,6 +7,7 @@ import {
 } from "./ai";
 import { publishToDevto } from "./devto";
 import { sharePostOnLinkedIn } from "./linkedin";
+import { publishToMedium } from "./medium";
 import { sendEmail } from "./sendEmail";
 import { retry } from "./utils";
 
@@ -26,6 +27,13 @@ export async function dailyContentBlast(purposes: string[]) {
 
     const { tags, series } = await retry(() => extractTagsAndSeries(markdown));
 
+    // const mediumUrl = await retry(() =>
+    //   publishToMedium(title, markdown, tags, series)
+    // );
+
+    // console.log("🔗 Medium yayını oluşturuldu." );
+    
+
     const devToUrl = await retry(() =>
       publishToDevto(title, markdown, tags, series)
     );
@@ -42,10 +50,11 @@ export async function dailyContentBlast(purposes: string[]) {
     await sendEmail(
       `✅ Yeni İçerik Yayınlandı: ${title}`,
       `Yeni yazı başarıyla yayınlandı.\n\n` +
-        `📅 Yayınlanma Tarihi: ${new Date().toLocaleString("tr-TR")}\n` +
-        `📝 Başlık: ${title}\n` +
-        `🔗 Dev.to Linki: ${devToUrl}\n` +
-        `📣 LinkedIn Durumu: ${linkedinResponse.id}`
+      `📅 Yayınlanma Tarihi: ${new Date().toLocaleString("tr-TR")}\n` +
+      `📝 Başlık: ${title}\n` +
+      `🔗 Dev.to Linki: ${devToUrl}\n` +
+      // `🔗 Medium Linki: ${mediumUrl}\n` +
+      `📣 LinkedIn Durumu: ${linkedinResponse.id}`
     );
   } catch (err) {
     console.error("🚨 Sistem durdu:", err);
