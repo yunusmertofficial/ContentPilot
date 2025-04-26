@@ -57,7 +57,15 @@ Cevap:
 }
 
 async function getTitleForCategory(category: string): Promise<string> {
-  const prompt = `Sen bir teknik blog yazarı ve yazılımcısın. '${category}' konusuna özel, dikkat çekici ve SEO uyumlu bir blog başlığı üret. Sadece 1 başlık ver.`;
+  const prompt = `Sen deneyimli bir teknik blog yazarı ve yazılımcısın. '${category}' konusunda EN FAZLA 5 kelimelik, dikkat çekici, profesyonel, SEO uyumlu bir blog başlığı üret. 
+
+  - Başlık akıcı ve merak uyandırıcı olsun.
+  - Sadece 1 başlık üret, açıklama yapma.
+  - Başlıkta emoji kullanma.
+  - Başlıkta gereksiz kelime doldurma (örneğin: "harika", "inanılmaz" gibi boş kelimeler kullanma).
+  - Başlık doğal dursun, clickbait yapma, okuyucuya değer vaadi hissettir.
+  - Türkçe üret.
+  `;
 
   const response = await cohere.generate({
     model: "command-r-plus",
