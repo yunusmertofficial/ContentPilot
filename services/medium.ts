@@ -27,6 +27,7 @@ export async function publishToMedium(title: string, content: string, tags: stri
   if (await isLoggedIn(page)) {
     console.log('Zaten giriş yapıldı! 🚀');
     await startPosting(page, title, content);
+    await browser.close();
   } else {
     console.log('Giriş yapılmadı, lütfen giriş yap ve Enter\'a bas.');
 
@@ -34,10 +35,9 @@ export async function publishToMedium(title: string, content: string, tags: stri
       await saveCookies(page);
       console.log('Cookie kaydedildi! ✅ Şimdi yazı oluşturuyoruz...');
       await startPosting(page, title, content);
+      await browser.close();
     });
   }
-
-  await browser.close();
 }
 
 async function isLoggedIn(page: Page): Promise<boolean> {
