@@ -29,7 +29,7 @@ export async function publishToMedium(title: string, content: string, tags: stri
     await startPosting(page, title, content);
   } else {
     console.log('Giriş yapılmadı, lütfen giriş yap ve Enter\'a bas.');
-    
+
     process.stdin.once('data', async () => {
       await saveCookies(page);
       console.log('Cookie kaydedildi! ✅ Şimdi yazı oluşturuyoruz...');
@@ -79,8 +79,8 @@ async function saveCookies(page: Page) {
 }
 
 async function loadCookies(page: Page) {
-  const cookiesString = fs.readFileSync(cookiesPath, 'utf-8');
   if (fs.existsSync(cookiesPath)) {
+    const cookiesString = fs.readFileSync(cookiesPath, 'utf-8');
     const cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
   }
