@@ -10,25 +10,30 @@ async function getDynamicCategories(purposes: string[]): Promise<string[]> {
   const purposeText = purposes.join(", ");
 
   const prompt = `
-Sen bir yazılım içerikleri danışmanısın.
-
-Aşağıdaki hedeflere yönelik bir teknik blog yazısı oluşturacağız:
-👉 ${purposeText}
-
-Bunun için uygun blog kategorilerine ihtiyacımız var.
-
-Kurallar:
-- Yukarıdaki konulara uygun güncel, teknik ve yazılımla ilgili kategoriler üret
-- En az 3, en fazla 10 kategori öner
-- Sadece kategori isimleri olacak şekilde listele (açıklama yazma)
-- Her satıra sadece 1 kategori yaz
-- Lütfen sadece aşağıdaki gibi sade bir liste ver (örnek):
+  Sen bir yazılım içerikleri danışmanısın.
+  
+  Aşağıdaki hedeflere yönelik teknik blog yazıları oluşturacağız:
+  👉 ${purposeText}
+  
+  Bunun için blog kategorileri üret.
+  
+  Kurallar:
+  - Yalnızca kategori isimlerini üret.
+  - Her satıra sadece bir kategori ismi yaz (ne açıklama, ne giriş cümlesi, sadece isim).
+  - Hiçbir açıklama, selamlaşma, giriş veya kapanış cümlesi yazma.
+  - İlk satırdan itibaren doğrudan kategori isimlerini listele.
+  - Numara, tire (-) veya başka işaret kullanma.
+  - En az 3, en fazla 10 kategori üret.
+  
+  Örnek:
   mobile devops
   state management
   cross-platform testing
-
-Cevap:
-`;
+  
+  Sadece bu formatta çıktı ver.
+  
+  Başla:
+  `;
 
   const response = await cohere.generate({
     model: "command-r-plus",
@@ -37,13 +42,27 @@ Cevap:
     temperature: 0.7,
   });
 
-  const lines = response.generations[0].text
+  const rawText = response.generations[0].text;
+  const lines = rawText
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
 
-  const cleanedLines = lines
-    .map((line) => line.replace(/^[\d\.\-\)\s]+/, "").toLowerCase())
+  console.log("🧪 AI'dan gelen ham liste:", lines, rawText);
+
+  // 1. Adım: "Elbette", "İşte", "Şunlar:" gibi cümleleri komple at
+  const onlyCategoryLines = lines.filter(
+    (line) => !/^elbet|^işte|^bunlar|^kategoriler|^listesi|:$/i.test(line)
+  );
+
+  // 2. Adım: Başında - veya numara olanları temizle
+  const cleanedLines = onlyCategoryLines
+    .map((line) =>
+      line
+        .replace(/^[\d\.\-\)\s]+/, "")
+        .toLowerCase()
+        .trim()
+    )
     .filter((line) => /^[a-z0-9\s\-]{3,50}$/.test(line));
 
   if (cleanedLines.length < 3) {
@@ -55,7 +74,6 @@ Cevap:
 
   return cleanedLines;
 }
-
 async function getTitleForCategory(category: string): Promise<string> {
   const prompt = `Sen deneyimli bir teknik blog yazarı ve yazılımcısın. '${category}' konusunda EN FAZLA 10 kelimelik, dikkat çekici, profesyonel, SEO uyumlu bir blog başlığı üret.
 
