@@ -98,15 +98,25 @@ async function getTitleForCategory(category: string): Promise<string> {
     .replace(/^["'\d\-\.\s]+|["'\s]+$/g, "");
 }
 
-async function generateMarkdownPost(title: string): Promise<string> {
+async function generateMarkdownPost(
+  title: string,
+  competencies: string[]
+): Promise<string> {
   const prompt = `
-Aşağıdaki başlığa göre yüksek kaliteli teknik blog yazısı yaz. Kurallar:
+Aşağıdaki başlığa göre yüksek kaliteli teknik blog yazısı yaz. Yazarın yetkinlikleri şunlardır: ${competencies.join(
+    ", "
+  )}. Yazarken bu yetkinlikleri göz önünde bulundur.
 
+Kurallar:
 - Başlık zaten verildi. İçeriğe başlık EKLEME. İçerik SADECE giriş paragrafıyla başlamalı.
 - Markdown formatında yaz
 - Giriş: En az 2 paragraf, konunun önemi anlatılsın
 - En az 3 alt başlık (150+ kelime): Teknik açıklama + örnek
 - En az 1 kod örneği (yorumlu, pratik)
+- **Kod Örneği**: Verilecek kod örnekleri yazarın yetkinliklerine uygun teknolojilerle (örneğin ${competencies.join(
+    ", "
+  )}) yazılmalı.
+- En az 1 liste (madde işaretli veya numaralı)
 - Gerçek dünya senaryosu: Nerede kullanılır?
 - Sonuç: Özet ve öğrenilenler
 - SEO uyumlu başlık ve kelimeler kullan

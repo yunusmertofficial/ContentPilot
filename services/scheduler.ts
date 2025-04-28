@@ -11,7 +11,10 @@ import { publishToMedium } from "./medium";
 import { sendEmail } from "./sendEmail";
 import { retry } from "./utils";
 
-export async function dailyContentBlast(purposes: string[]) {
+export async function dailyContentBlast(
+  purposes: string[],
+  competencies: string[]
+) {
   try {
     console.log("📚 Kategoriler alınıyor...");
     const categories = await retry(() => getDynamicCategories(purposes));
@@ -22,7 +25,9 @@ export async function dailyContentBlast(purposes: string[]) {
     const title = await retry(() => getTitleForCategory(category));
     console.log("📝 Başlık:", title);
 
-    const markdown = await retry(() => generateMarkdownPost(title));
+    const markdown = await retry(() =>
+      generateMarkdownPost(title, competencies)
+    );
     console.log("✍️ Yazı oluşturuldu, yayınlanıyor...");
 
     const { tags, series } = await retry(() => extractTagsAndSeries(markdown));
@@ -32,7 +37,6 @@ export async function dailyContentBlast(purposes: string[]) {
     // );
 
     // console.log("🔗 Medium yayını oluşturuldu." );
-    
 
     const devToUrl = await retry(() =>
       publishToDevto(title, markdown, tags, series)
@@ -50,11 +54,11 @@ export async function dailyContentBlast(purposes: string[]) {
     await sendEmail(
       `✅ Yeni İçerik Yayınlandı: ${title}`,
       `Yeni yazı başarıyla yayınlandı.\n\n` +
-      `📅 Yayınlanma Tarihi: ${new Date().toLocaleString("tr-TR")}\n` +
-      `📝 Başlık: ${title}\n` +
-      `🔗 Dev.to Linki: ${devToUrl}\n` +
-      // `🔗 Medium Linki: ${mediumUrl}\n` +
-      `📣 LinkedIn Durumu: ${linkedinResponse.id}`
+        `📅 Yayınlanma Tarihi: ${new Date().toLocaleString("tr-TR")}\n` +
+        `📝 Başlık: ${title}\n` +
+        `🔗 Dev.to Linki: ${devToUrl}\n` +
+        // `🔗 Medium Linki: ${mediumUrl}\n` +
+        `📣 LinkedIn Durumu: ${linkedinResponse.id}`
     );
   } catch (err) {
     console.error("🚨 Sistem durdu:", err);
