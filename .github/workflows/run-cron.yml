@@ -2,7 +2,7 @@ name: Run My Cron Job
 
 on:
   schedule:
-    - cron: "30 7 * * *" # ✅ Her gün Türkiye saatiyle 10:30'da çalışır
+    - cron: "0 */23 * * *" # ✅ Her gün Türkiye saatiyle 10:30'da çalışır
   workflow_dispatch:
 
 jobs:
